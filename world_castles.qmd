@@ -1,0 +1,65 @@
+---
+title: "tidytuesday1"
+format: html
+editor: visual
+---
+
+## Libraries and Data
+
+```{r}
+library(tidyverse)
+library(tidytuesdayR)
+
+raw_data <- tt_load("2026-09-01")
+
+world_castles_raw <- raw_data
+world_castles <- world_castles_raw$world_castles
+```
+
+## Viewing Data
+
+```{r}
+glimpse(world_castles)
+```
+
+## Which Countries Have the Most Castles?
+
+```{r}
+world_castles |>
+  count(sort(country)) |>
+  filter(n > 200) 
+
+world_castles |>
+  count(country) |>
+  filter(n > 200) |>
+  ggplot(
+    aes(x = reorder(country, n), y = n, 
+    fill = country)) +
+  geom_col()
+```
+France has the most castles at 351. I subset the data to countries that contain 200 or more castles after viewing all of the data in with a simple bar plot. 
+
+## Palaces vs. Fortresses
+
+```{r}
+pvf_summary <- world_castles |>
+  filter(category %in% c("palace", "fortress")) |>
+  group_by(category) |>
+  summarise(
+    mean_year = round(mean(year, na.rm = TRUE)),
+    median_year = median(year, na.rm = TRUE),
+    quantile(year, 0.25, na.rm = TRUE),
+    quantile(year, 0.75, na.rm = TRUE)
+    )
+
+pvf_boxplot <- world_castles |>
+  filter(category %in% c("palace", "fortress")) |>
+ggplot(aes(x = category, y = year)) +
+  geom_boxplot()
+
+pvf_summary
+pvf_boxplot
+```
+
+Fortresses had a mean construction year of `r pvf_summary$mean_year[pvf_summary$category == "fortress"]` and a 
+median year of `r pvf_summary$median_year[pvf_summary$category == "fortress"]`.
