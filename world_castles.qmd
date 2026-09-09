@@ -1,5 +1,6 @@
 ---
 title: "tidytuesday1"
+author: "Dylan Wikel"
 format: html
 editor: visual
 ---
