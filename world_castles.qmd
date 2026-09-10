@@ -37,8 +37,18 @@ world_castles |>
     aes(x = reorder(country, n), y = n, 
     fill = country)) +
   geom_col()
+
+world_castles |>
+  count(country) |>
+  filter(n > 200) |>
+  ggplot(
+    aes(x = reorder(country, 
+    fill = country)) +
+  geom_bar() +
+    position_dodge()
 ```
-France has the most castles at 351. I subset the data to countries that contain 200 or more castles after viewing all of the data in with a simple bar plot. 
+
+France has the most castles at 351. I subset the data to countries that contain 200 or more castles after viewing all of the data in with a simple bar plot.
 
 ## Palaces vs. Fortresses
 
@@ -62,5 +72,4 @@ pvf_summary
 pvf_boxplot
 ```
 
-Fortresses had a mean construction year of `r pvf_summary$mean_year[pvf_summary$category == "fortress"]` and a 
-median year of `r pvf_summary$median_year[pvf_summary$category == "fortress"]`.
+Fortresses had a mean construction year of `r pvf_summary$mean_year[pvf_summary$category == "fortress"]` and a median year of `r pvf_summary$median_year[pvf_summary$category == "fortress"]`.
