@@ -1,0 +1,55 @@
+---
+title: "green_areas"
+format: pdf
+editor: visual
+---
+
+## Loading necessary packages
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+## Reading in the Data
+
+```{r}
+urban <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-09-22/urban.csv')
+```
+
+## Cleaning
+
+```{r}
+urban_clean <- 
+  urban |>
+  clean_names() |>
+  mutate(
+    avg_per
+  )
+```
+
+## Q1: Which city has the most green area per capita in each year?
+
+```{r}
+urban_cities <- urban_clean |>
+    select(
+      city_name,
+      green_area_per_capita_m2) |>
+  arrange(desc(green_area_per_capita_m2))
+  
+head(urban_cities)
+```
+
+```{r}
+urban_countries <- urban_clean |>
+    filter(year == 1990) |>
+    group_by(country_or_territory_name)
+  
+head(urban_countries)
+```
+
+```{r}
+ countries_urban <-urban_clean |> 
+  group_by(country_or_territory_name)
+```
+
